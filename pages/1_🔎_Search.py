@@ -47,7 +47,7 @@ def display_job_ad(job, index):
                 st.write(f"**[{job.company}]({job.company_link})**")  # Fallback in case of unexpected format
 
         with col2:
-            file_name = os.path.join(LinkedinLetterGenerator.get_class_path(), f"{hash(job.job_id)}.txt")
+            file_name = os.path.join(LinkedinLetterGenerator.get_class_path(), f"{job.job_id}.txt")
             # Check if the file exists
 
             if os.path.exists(file_name) or (job in old_jobs and job not in st.session_state.jobs):
@@ -101,7 +101,16 @@ if "initialized" not in st.session_state:
 
 init_model_selection()
 
-old_jobs = [LinkedinJob.load_job(os.path.join(LinkedinJob.get_class_path(),path)) for path in os.listdir(LinkedinJob.get_class_path())]
+
+old_jobs = []
+for path in os.listdir(LinkedinJob.get_jobs_path()):
+    test = os.path.join(LinkedinJob.get_jobs_path(), path)
+    job = LinkedinJob()
+    job.load_job_from_path(test)
+    old_jobs.append(job)
+
+# old_jobs = [LinkedinJob().load_job_from_path(os.path.join(LinkedinJob.get_jobs_path(),path)) for path in os.listdir(LinkedinJob.get_jobs_path())]
+
 
 st.header("Search Jobs")
 st.write("")

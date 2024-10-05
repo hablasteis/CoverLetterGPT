@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 from src.job import LinkedinJob, CustomJob
 from src.generator import LinkedinLetterGenerator, CustomLetterGenerator
 
@@ -22,7 +23,6 @@ def create_folders():
     LinkedinJob.initialize()
     CustomJob.initialize()
     CustomLetterGenerator.initialize()
-
 
 
 def split_by_dear(content):

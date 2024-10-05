@@ -15,7 +15,7 @@ if os.path.exists("cv.txt"):
 else:
     existing_cv = "Your CV content goes here."
 
-cv_text = st.text_area("", existing_cv, height=400)
+cv_text = st.text_area("Your CV", existing_cv, height=400, label_visibility="hidden")
 save_cv_button = st.button("Save CV")
 
 if save_cv_button:
