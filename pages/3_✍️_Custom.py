@@ -15,7 +15,7 @@ with st.sidebar:
     show_model_selection()
 
 
-col1, col2 = st.columns([4, 1])
+col1, col2 = st.columns([4, 1], vertical_alignment="bottom")
 
 with col1:
     st.header("Create Custom Cover Letter")

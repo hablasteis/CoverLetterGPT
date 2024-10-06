@@ -167,4 +167,5 @@ cython_debug/
 env
 jobs
 generated_letters
-cv.txt
+*.txt
+*.json

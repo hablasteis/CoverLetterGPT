@@ -18,11 +18,28 @@ class CoverLetter():
         with open(self.letter_path, 'w') as file:
             file.write(cover_letter_text)
 
+    def saved_in_messages(self, messages):
+        if messages is None:
+            return None
+        
+        with open(self.letter_path, 'r') as file:
+            saved = file.read()
+            for index, message in enumerate(messages):
+                if message["content"] == saved:
+                    return index
+        
+        return None
+
+
+
     def exists_pdf(self, index):
         return os.path.exists(os.path.join(CoverLetter.downloads_folder, f"{self.job_id}_{index}.pdf"))
 
+    def get_file_name(self, index):
+        return f"{self.job_id}_{index}.pdf"
+    
     def export_to_pdf(self, cover_letter_text, index):
-        file_name = f"{self.job_id}_{index}.pdf"
+        file_name = self.get_file_name(index)
 
         # Set file path for saving the PDF
         file_path = os.path.join(CoverLetter.downloads_folder, file_name)

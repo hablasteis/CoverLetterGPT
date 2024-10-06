@@ -125,7 +125,7 @@ retriever = LinkedinRetriever(jobs)
 options = {}
 
 with st.container(border=True):
-    col1, col2, _, col3 = st.columns([2, 2, 1, 1])
+    col1, col2, _, col3 = st.columns([2, 2, 1, 1], vertical_alignment="bottom")
     with col1:
         options["job_title"] = st.text_input("Job Title", value="Data Scientist", label_visibility="hidden")
     

@@ -1,10 +1,35 @@
 import streamlit as st
+import os
 from openai import OpenAI
 
-from src.job import CustomJob, Job
+from prompts import dumb_down_prompt
+from src.job import Job
 from src.letter import CoverLetter
 from src.generator import ChatLetterGenerator
 from utils.general import show_model_selection, init_model_selection, initialize_app, split_by_dear
+
+def stream_message():
+    with st.chat_message("assistant"):
+        response = st.write_stream(
+            generator.generate(
+                model_name = st.session_state.model_name, 
+                messages = st.session_state.messages[job_id]
+                )
+            )
+    st.session_state.messages[job_id].append({"role": "assistant", "content": response})
+    st.rerun()
+
+
+@st.dialog("View PDF")
+def view_pdf(index):
+    from streamlit_pdf_viewer import pdf_viewer
+    file_path = os.path.join(CoverLetter.downloads_folder, cl.get_file_name(index))
+    st.markdown(f"Your cover letter is saved at:")
+    st.code(f"file:///{file_path}", language="shell")
+
+    with st.spinner("Loading..."):
+        pdf_viewer(file_path,)
+
 
 st.set_page_config(page_title="Chat", page_icon="💬", layout="wide")
 
@@ -53,30 +78,82 @@ if "job_id" in st.session_state:
     generator = ChatLetterGenerator(job_id)
     cl = CoverLetter(job.job_id, job.get_letter_path())
 
+    # Get index of the cover letter which is saved on disk
+    saved_index = cl.saved_in_messages(st.session_state.messages[job_id])
+
     st.write("Improve your letter with GPT")
 
     if st.session_state.job_id in st.session_state.messages:
-        
+
         for index, message in enumerate(st.session_state.messages[job_id]):
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
 
                 if message["role"] == "assistant":
-                    col1, _, col2, col3 = st.columns([1, 1, 1, 1])
-                    if col1.button("De-formalize", icon=":material/trending_down:", use_container_width=True , key=f"dumb_{index}"):
-                        # generator.dumb_down()
-                        None                        
+                    col1, _, col2, col3 = st.columns([1, 2, 1, 1])
 
-                    if col2.button("Save", icon=":material/save:", use_container_width=True , key=f"save_{index}"):
-                        cl.save(message["content"])
+                    with col1:
+                        if index == len(st.session_state.messages[job_id]) - 1:
+                            dumber = st.button("Simplify", icon=":material/trending_down:", use_container_width=True , key=f"dumb_{index}")
+                            if dumber:
+                                st.session_state.messages[job_id].append({"role": "user", "content": "Simplify the cover letter"})
+                                
+
+                    with col2:
+                        if saved_index != index:
+                            if st.button("Save", 
+                                        icon=":material/save:", 
+                                        use_container_width=True , 
+                                        key=f"save_{index}"
+                                        ):
+                                cl.save(message["content"])
+                        else:
+                            st.button("Saved", 
+                                        icon=":material/check:", 
+                                        use_container_width=True , 
+                                        key=f"save_{index}",
+                                        type="primary"
+                                        )
+
+                    
                     with col3:    
 
                         if not cl.exists_pdf(index):
-                            if st.button("Export", icon=":material/picture_as_pdf:", use_container_width=True, key=f"export_{index}"):
-                                cl.export_to_pdf(message["content"], index)
+                            st.button(
+                                "Export", 
+                                icon=":material/picture_as_pdf:", 
+                                use_container_width=True, 
+                                key=f"export_{index}",
+                                on_click=cl.export_to_pdf,
+                                args=(message["content"], index)
+                                )
                         else:
-                            st.button("✅", icon=":material/picture_as_pdf:", use_container_width=True, key=f"export_{index}")
+                            if st.button(
+                                "View PDF", 
+                                icon=":material/download_done:", 
+                                use_container_width=True,
+                                key=f"view_{index}",
+                                type="primary"
+                                ):
+                                view_pdf(index)
+            
+            
+        if dumber:
 
+            messsage = st.session_state.messages[job_id][index]["content"]
+
+            dumb_prompt = dumb_down_prompt.format(cover_letter=message)
+            dumb_message = {"role": "assistant", "content": dumb_prompt}
+            with st.chat_message("assistant"):
+                response = st.write_stream(
+                    generator.generate(
+                        model_name = st.session_state.model_name, 
+                        messages = st.session_state.messages[job_id] + [dumb_message]
+                        )
+                    )
+
+            st.session_state.messages[job_id].append({"role": "assistant", "content": response})
+            st.rerun()
 
         if prompt := st.chat_input("Hi! What should I change?"):
             st.session_state.messages[job_id].append({"role": "user", "content": prompt})
@@ -84,20 +161,13 @@ if "job_id" in st.session_state:
                 st.markdown(prompt)
 
             with st.chat_message("assistant"):
-                # stream = client.chat.completions.create(
-                #     model=st.session_state.model_name,
-                #     messages=[
-                #         {"role": m["role"], "content": m["content"]}
-                #         for m in st.session_state.messages[job_id]
-                #     ],
-                #     stream=True,
-                # )
-                # response = st.write_stream(stream)
                 response = st.write_stream(
                     generator.generate(
                         model_name = st.session_state.model_name, 
                         messages = st.session_state.messages[job_id]
                         )
                     )
+
             st.session_state.messages[job_id].append({"role": "assistant", "content": response})
             st.rerun()
+            # stream_message()
