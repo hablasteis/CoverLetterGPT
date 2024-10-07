@@ -1,4 +1,6 @@
 import streamlit as st
+from dotenv import load_dotenv
+load_dotenv()
 
 from src.retriever import LinkedinRetriever, CustomRetriever
 from src.display_cover_letters import display_cover_letters
