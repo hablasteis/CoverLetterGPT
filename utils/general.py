@@ -60,3 +60,6 @@ def show_model_selection():
     models = ["gpt-4o-mini", "gpt-4o", "gpt-4"]
     st.selectbox("Select Model", models, on_change=update_model, key="model_name")
     
+def exists_cv():
+    if not os.path.exists("cv.txt"):
+        st.warning("😲 Psst! Your CV is empty, write it in the Profile section to generate cover letters!")

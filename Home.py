@@ -1,45 +1,48 @@
-from dotenv import load_dotenv
 import streamlit as st
 
-load_dotenv()
+from src.retriever import LinkedinRetriever, CustomRetriever
+from src.display_cover_letters import display_cover_letters
+from src.chat import is_chat_visible, display_chat, is_correct_chat
+from utils.general import show_model_selection, init_model_selection, initialize_app, exists_cv
+    
 
-from utils.general import initialize_app, show_model_selection, init_model_selection
+st.set_page_config(page_title="Search", page_icon="🔎", layout="wide")
 
-
-
-st.set_page_config(
-    page_title="LinkedIn Job Scraper",
-    layout="wide",
-)
-
-if 'initialized' not in st.session_state:
+if "initialized" not in st.session_state:
     initialize_app()
-
 
 with st.sidebar:
     init_model_selection()
     show_model_selection()
 
+job_board = st.empty()
+
+
+tab1, tab2 = st.tabs(["LinkedIn", "✍️ Custom"])
+
+# Warn user if CV is not registered
+exists_cv()
+
+with tab1:
+    retriever = LinkedinRetriever()
+    retriever.display_search_bar()
     
-st.title("Welcome!")
-st.subheader("Manage your applications effortlessly.")
-st.write("## ")
+    if is_chat_visible() and is_correct_chat(retriever):
+        display_chat()
 
-col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
+with tab2:
+    retriever = CustomRetriever()
+    retriever.display_search_bar()
 
-with col1:
-    st.markdown("### 🔍 Search")
-    st.markdown("Find your next opportunity.")
+    if is_chat_visible() and is_correct_chat(retriever):
+        display_chat()
 
-with col2: 
-    st.markdown("### ✅ Letters")
-    st.markdown("View and edit your cover letters.")
 
-with col3:
-    st.markdown("### ✍️ Custom")
-    st.markdown("Create custom cover letters in seconds.")
 
-with col4:
-    st.markdown("#### 📝 CV")
-    st.markdown("Keep your CV up-to-date.")
+if "jobs" not in st.session_state and not is_chat_visible():
+    st.header("")
 
+    st.header("Your Letters")
+    st.write("")
+
+    display_cover_letters()

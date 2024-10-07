@@ -2,12 +2,12 @@ import streamlit as st
 import os 
 import json
 
-st.set_page_config(page_title="CV", page_icon="📝", layout="wide")
+st.set_page_config(page_title="Profile", page_icon="👤", layout="wide")
 
 st.header("Update your CV")
 
 st.write("")
-st.write("**Disclaimer**: All your personal data is hosted locally on your computer.")
+st.info("**Disclaimer**: All your personal data is hosted locally on your computer and used **only** for the generation of the **cover letter**.")
 
 st.write("")
 st.write("")

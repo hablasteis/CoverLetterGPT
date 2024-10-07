@@ -1,13 +1,8 @@
 import streamlit as st
 import os
-from src.generator import LinkedinLetterGenerator, LetterGenerator, CustomLetterGenerator
+from src.generator import LinkedinLetterGenerator, CustomLetterGenerator
 from src.job import LinkedinJob, CustomJob
-from utils.general import split_by_dear, initialize_app
-
-st.set_page_config(page_title="Letters", page_icon="✅", layout="wide")
-
-if "initialized" not in st.session_state:
-    initialize_app()
+from utils.general import split_by_dear
 
 def display_cover_letter_comparison(job):
     """
@@ -34,7 +29,7 @@ def display_cover_letter_comparison(job):
         with col3:
             if st.button("Open chat", key=job.job_id):
                 st.session_state["edit_letter"]=job.job_id
-                st.switch_page("pages/0_💬_Chat.py")
+                st.switch_page("src/chat.py")
 
 
         # Expander to compare job description and cover letter
@@ -84,70 +79,69 @@ def display_cover_letter_comparison(job):
                     st.warning("No cover letter available.")
 
 
-st.header("View Your Cover Letters")
-st.write("")
+def display_cover_letters():
 
-exist_other_letters = False
+    exist_other_letters = False
 
-if "jobs" in st.session_state:
-    st.write("From current session.")
+    custom_jobs = [file for file in os.listdir(os.path.join(CustomLetterGenerator.get_class_path()))]
 
-    for index, job in enumerate(st.session_state.jobs):
-        file_name = os.path.join(LinkedinLetterGenerator.get_class_path(), f"{job.job_id}.txt")
-        if os.path.exists(file_name):
-            st.write("")
-            display_cover_letter_comparison(job)
-            st.write("---")
+    if custom_jobs:
+        st.subheader("")
+        st.write("Custom Jobs")
 
-            exist_other_letters = True
-
-current_session_files = [f"{job.job_id}" for job in st.session_state.jobs] if "jobs" in st.session_state else []
-old_letters = [os.path.splitext(file)[0] for file in os.listdir(LinkedinLetterGenerator.get_class_path()) if os.path.splitext(file)[0] not in current_session_files]
-
-if old_letters:
-    st.write("Old jobs.")
-    for job_id in old_letters:
-        job_path = os.path.join(LinkedinJob.get_jobs_path(), f"{job_id}.json")
-        job = LinkedinJob()
-        job.load_job_from_path(job_path)
-        
-        display_cover_letter_comparison(job)
-        st.write("---")
-
-        exist_other_letters = True
-
-
-
-custom_jobs = [file for file in os.listdir(os.path.join(CustomLetterGenerator.get_class_path()))]
-
-if custom_jobs:
-    st.subheader("")
-    st.subheader("Custom Jobs")
-
-    for file in custom_jobs:
-        if file.endswith('.txt'):
-            job_id = os.path.splitext(os.path.basename(file))[0]
-            
-            if CustomJob.exists(job_id):
-                job_path = os.path.join(CustomJob.get_jobs_path(), f"{job_id}.json")
-                job = CustomJob()
-                job.load_job_from_path(job_path) 
+        for file in custom_jobs:
+            if file.endswith('.txt'):
+                job_id = os.path.splitext(os.path.basename(file))[0]
                 
-            else:
-                job = CustomJob(
-                    job_id = job_id, 
-                    title = "Custom Job", 
-                    company = "Custom Company", 
-                    company_link = None, 
-                    company_img_link = None, 
-                    date = None, 
-                    link = None, 
-                    insights = None, 
-                    description = None
-                )
-            st.write("")
+                if CustomJob.exists(job_id):
+                    job_path = os.path.join(CustomJob.get_jobs_path(), f"{job_id}.json")
+                    job = CustomJob()
+                    job.load_job_from_path(job_path) 
+                    
+                else:
+                    job = CustomJob(
+                        job_id = job_id, 
+                        title = "Custom Job", 
+                        company = "Custom Company", 
+                        company_link = None, 
+                        company_img_link = None, 
+                        date = None, 
+                        link = None, 
+                        insights = None, 
+                        description = None
+                    )
+                st.write("")
+                display_cover_letter_comparison(job)
+                st.write("---")
+                exist_other_letters = True
+
+    if "jobs" in st.session_state:
+        st.write("From current session.")
+
+        for index, job in enumerate(st.session_state.jobs):
+            file_name = os.path.join(LinkedinLetterGenerator.get_class_path(), f"{job.job_id}.txt")
+            if os.path.exists(file_name):
+                st.write("")
+                display_cover_letter_comparison(job)
+                st.write("---")
+
+                exist_other_letters = True
+
+    current_session_files = [f"{job.job_id}" for job in st.session_state.jobs] if "jobs" in st.session_state else []
+    old_letters = [os.path.splitext(file)[0] for file in os.listdir(LinkedinLetterGenerator.get_class_path()) if os.path.splitext(file)[0] not in current_session_files]
+
+    if old_letters:
+        st.write("LinkedIn jobs")
+        for job_id in old_letters:
+            job_path = os.path.join(LinkedinJob.get_jobs_path(), f"{job_id}.json")
+            job = LinkedinJob()
+            job.load_job_from_path(job_path)
+            
             display_cover_letter_comparison(job)
             st.write("---")
+
             exist_other_letters = True
-if not exist_other_letters:
-    st.write("There are no cover letters here!")
+
+
+    if not exist_other_letters:
+        st.write("There are no cover letters here!")
