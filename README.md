@@ -1,6 +1,6 @@
 # CoverLetterGPT: Your Automated Job Application Assistant
 
-Welcome to **CoverLetterGPT**, a tool to search jobs on Linkedin and automated cover letter writer to simplify your job search! Tired of writing repetitive cover letters? I hope that this tool can save you some time landing your dream job. 
+Welcome to **CoverLetterGPT**, a tool to search jobs on Linkedin and automate cover letter writing to simplify your job search! Tired of writing repetitive cover letters? I hope that this tool can save you some time landing your dream job. 
 
 Brace yourself! This app is designed to be **super intuitive**—even if you’re not into coding, you’ll find it easy to use. Let's dive in!
 
@@ -14,6 +14,92 @@ Brace yourself! This app is designed to be **super intuitive**—even if you’r
 
 ---
 
+## Key Features
+
+<br><br>
+
+<table border="0">
+  <tr>
+    <td style="padding-right: 20px;">
+      <h3>1. Add Your CV and Personal Details</h3>
+      Upload your CV and personal information to generate tailored cover letters.
+    </td>
+    <td width="70%">
+      <img src="https://github.com/hablasteis/CoverLetterGPT/blob/main/docs/media/edit_profile.gif?raw=true" alt="Update CV" height="400px" />
+    </td>
+  </tr>
+</table>
+
+<br><br>
+
+<table border="0">
+  <tr>
+    <td width="70%">
+      <img src="https://github.com/hablasteis/CoverLetterGPT/blob/main/docs/media/search_linkedin.gif?raw=true" alt="Search LinkedIn Jobs" height="400px" />
+    </td>
+    <td style="padding-left: 20px;">
+      <h3>2. Search for Jobs on LinkedIn</h3>
+Use the integrated LinkedIn search to explore job opportunities. Enter keywords, browse listings, and choose jobs directly from the app to start generating your cover letters.
+    </td>
+  </tr>
+</table>
+
+<br><br>
+
+<table border="0">
+  <tr>
+    <td style="padding-right: 20px;">
+      <h3>3. Generate a Custom Cover Letter</h3>
+Input specific job details to create a personalized cover letter in seconds.
+    </td>
+    <td width="70%">
+      <img src="https://github.com/hablasteis/CoverLetterGPT/blob/main/docs/media/custom_cover_letter.gif?raw=true" alt="Generate Custom Cover Letter" height="400px" />
+    </td>
+  </tr>
+</table>
+
+<br><br>
+
+<table border="0">
+  <tr>
+    <td width="70%">
+      <img src="https://github.com/hablasteis/CoverLetterGPT/blob/main/docs/media/generate_bulk.gif?raw=true" alt="Bulk Generate Cover Letters" height="400px" />
+    </td>
+    <td style="padding-right: 20px;">
+      <h3>4. Bulk Generate Cover Letters</h3>
+Streamline your job search by generating multiple cover letters at once, saving you time while maximizing your opportunities.    </td>
+  </tr>
+</table>
+
+<br><br>
+
+<table border="0">
+  <tr>
+    <td style="padding-left: 20px;">
+      <h3>5. Chat with Your Cover Letter</h3>
+Engage with your cover letter through our chat feature. Modify and enhance it to reflect your personality, ensuring it truly represents you before submission.    </td>
+    <td width="70%">
+      <img src="https://github.com/hablasteis/CoverLetterGPT/blob/main/docs/media/chat.gif?raw=true" alt="Chat with Your Cover Letter" height="400px" />
+    </td>
+  </tr>
+</table>
+
+<br><br>
+
+<table border="0">
+  <tr>
+    <td width="70%">
+      <img src="https://github.com/hablasteis/CoverLetterGPT/blob/main/docs/media/view_pdf.gif?raw=true" alt="Export Cover Letter as PDF" height="400px" />
+    </td>
+    <td style="padding-left: 20px;">
+      <h3>6. Export Your Cover Letter as PDF</h3>
+Download your finalized cover letter as a polished PDF with just a click.    </td>
+  </tr>
+</table>
+
+<br><br>
+
+---
 ## 💡 How Does It Work?
 
 **CoverLetterGPT** uses OpenAI's GPT technology to craft personalized cover letters for job applications, but how is it different from using ChatGPT directly? Simple! With **CoverLetterGPT**, you'll save time by skipping repetitive tasks. This tool automates the process by fetching job details from LinkedIn, generating tailored cover letters instantly, so you can focus on applying instead of rewriting.
