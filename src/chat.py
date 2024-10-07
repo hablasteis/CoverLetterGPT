@@ -9,9 +9,9 @@ from utils.general import split_by_dear
 
 
 @st.dialog("View PDF")
-def view_pdf(index):
+def view_pdf(file_name):
     from streamlit_pdf_viewer import pdf_viewer
-    file_path = os.path.join(CoverLetter.downloads_folder, cl.get_file_name(index))
+    file_path = os.path.join(CoverLetter.downloads_folder, file_name)
     st.markdown(f"Your cover letter is saved at:")
     st.code(f"file:///{file_path}", language="shell")
 
@@ -24,9 +24,8 @@ def is_chat_visible():
 def set_chat_type(chat_type):
     st.session_state["display_chat"] = chat_type
 
-def is_correct_chat(retriever):
-    class_name = retriever.__class__.__name__
-    return st.session_state["display_chat"] == class_name
+def is_correct_chat(chat_type):
+    return st.session_state["display_chat"] == chat_type
 
 def display_chat():
 
@@ -35,7 +34,7 @@ def display_chat():
         del st.session_state.edit_letter
 
 
-    st.header("Chat with a cover letter")
+    st.header("Chat with cover letter")
 
 
     if "job" not in st.query_params and "job_id" not in st.session_state:
@@ -123,7 +122,7 @@ def display_chat():
                                     key=f"view_{index}",
                                     type="primary"
                                     ):
-                                    view_pdf(index)
+                                    view_pdf(cl.get_file_name(index))
                 
                 
             if dumber:

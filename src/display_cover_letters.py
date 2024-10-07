@@ -2,7 +2,12 @@ import streamlit as st
 import os
 from src.generator import LinkedinLetterGenerator, CustomLetterGenerator
 from src.job import LinkedinJob, CustomJob
+from src.chat import set_chat_type
 from utils.general import split_by_dear
+
+def open_chat(job_id):
+    st.session_state["edit_letter"]=job_id
+    set_chat_type("LettersView")
 
 def display_cover_letter_comparison(job):
     """
@@ -27,10 +32,8 @@ def display_cover_letter_comparison(job):
                 st.write(f"**[{job.company}]({job.company_link})**")
 
         with col3:
-            if st.button("Open chat", key=job.job_id):
-                st.session_state["edit_letter"]=job.job_id
-                st.switch_page("src/chat.py")
-
+            st.button("", icon=":material/chat_paste_go:", key=job.job_id, on_click=open_chat, args=[job.job_id], type="primary")
+                
 
         # Expander to compare job description and cover letter
         with st.expander("Compare Job Description and Cover Letter"):

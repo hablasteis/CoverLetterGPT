@@ -17,26 +17,25 @@ with st.sidebar:
     init_model_selection()
     show_model_selection()
 
-job_board = st.empty()
-
-
-tab1, tab2 = st.tabs(["LinkedIn", "✍️ Custom"])
 
 # Warn user if CV is not registered
 exists_cv()
+
+
+tab1, tab2 = st.tabs(["LinkedIn", "✍️ Custom"])
 
 with tab1:
     retriever = LinkedinRetriever()
     retriever.display_search_bar()
     
-    if is_chat_visible() and is_correct_chat(retriever):
+    if is_chat_visible() and is_correct_chat(retriever.__class__.__name__):
         display_chat()
 
 with tab2:
     retriever = CustomRetriever()
     retriever.display_search_bar()
 
-    if is_chat_visible() and is_correct_chat(retriever):
+    if is_chat_visible() and is_correct_chat(retriever.__class__.__name__):
         display_chat()
 
 

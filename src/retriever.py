@@ -97,7 +97,8 @@ class LinkedinRetriever(Retriever):
 
     # To run async function in the background
     async def scrape_jobs(self, currently_showing):  
-        # TODO: When the cookie is not valid, this might continue indefinetly, please fix   
+        # TODO: When the cookie is not valid, this might continue indefinetly, please fix
+        # this try catch doesnt work properly   
         try:
             await asyncio.gather(self.gather_scrapes(currently_showing))
         except InvalidCookieException:
@@ -112,6 +113,7 @@ class LinkedinRetriever(Retriever):
                 col3, col4 = st.columns([1, 10])
 
                 with col3:
+                    # if job.company_img_link != "":
                     st.image(job.company_img_link, width=50)
 
                 with col4:
@@ -188,10 +190,10 @@ class LinkedinRetriever(Retriever):
 
         col1, col2, _, col3 = st.columns([2, 2, 1, 1], vertical_alignment="bottom")
         with col1:
-            self.options["job_title"] = st.text_input("Job Title", placeholder="Data Scientist")
+            self.options["job_title"] = st.text_input("Job Title", placeholder="e.g. Software Engineer")
         
         with col2:
-            self.options["location"] = st.text_input("Location", placeholder="Sweden")
+            self.options["location"] = st.text_input("Location", placeholder="e.g. Europe, Sweden or Stockholm")
         # self.options["limit"] = st.number_input("Show", value=10, step=5)
 
         with col3:
@@ -318,5 +320,3 @@ class CustomRetriever():
 
             st.session_state["edit_letter"] = job_id
             set_chat_type(self.__class__.__name__)
-
-        

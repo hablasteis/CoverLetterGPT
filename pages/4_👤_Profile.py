@@ -26,7 +26,12 @@ with c1:
         with open("info.json", 'r') as file:
             info = json.load(file)
     else:
-        info = {}
+        info = {
+            "name": "",
+            "address": "",
+            "email": "",
+            "phone": "",
+            }
     
 
     st.write("")    
