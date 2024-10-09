@@ -25,7 +25,7 @@ Brace yourself! This app is designed to be **super intuitive**—even if you’r
       Upload your CV and personal information to generate tailored cover letters.
     </td>
     <td width="70%">
-      <img src="https://github.com/hablasteis/CoverLetterGPT/blob/main/docs/media/edit_profile.gif?raw=true" alt="Update CV" height="400px" />
+      <img src="https://github.com/hablasteis/CoverLetterGPT/blob/main/docs/media/edit_profile.gif?raw=true" alt="Update CV" />
     </td>
   </tr>
 </table>
@@ -35,7 +35,7 @@ Brace yourself! This app is designed to be **super intuitive**—even if you’r
 <table border="0">
   <tr>
     <td width="70%">
-      <img src="https://github.com/hablasteis/CoverLetterGPT/blob/main/docs/media/search_linkedin.gif?raw=true" alt="Search LinkedIn Jobs" height="400px" />
+      <img src="https://github.com/hablasteis/CoverLetterGPT/blob/main/docs/media/search_linkedin.gif?raw=true" alt="Search LinkedIn Jobs" />
     </td>
     <td style="padding-left: 20px;">
       <h3>2. Search for Jobs on LinkedIn</h3>
@@ -49,11 +49,11 @@ Use the integrated LinkedIn search to explore job opportunities. Enter keywords,
 <table border="0">
   <tr>
     <td style="padding-right: 20px;">
-      <h3>3. Generate a Custom Cover Letter</h3>
+      <h3>2b. Generate a Custom Cover Letter</h3>
 Input specific job details to create a personalized cover letter in seconds.
     </td>
     <td width="70%">
-      <img src="https://github.com/hablasteis/CoverLetterGPT/blob/main/docs/media/custom_cover_letter.gif?raw=true" alt="Generate Custom Cover Letter" height="400px" />
+      <img src="https://github.com/hablasteis/CoverLetterGPT/blob/main/docs/media/search_custom.gif?raw=true" alt="Generate Custom Cover Letter" />
     </td>
   </tr>
 </table>
@@ -63,10 +63,10 @@ Input specific job details to create a personalized cover letter in seconds.
 <table border="0">
   <tr>
     <td width="70%">
-      <img src="https://github.com/hablasteis/CoverLetterGPT/blob/main/docs/media/generate_bulk.gif?raw=true" alt="Bulk Generate Cover Letters" height="400px" />
+      <img src="https://github.com/hablasteis/CoverLetterGPT/blob/main/docs/media/generate_bulk.gif?raw=true" alt="Bulk Generate Cover Letters" />
     </td>
     <td style="padding-right: 20px;">
-      <h3>4. Bulk Generate Cover Letters</h3>
+      <h3>3. Bulk Generate Cover Letters</h3>
 Streamline your job search by generating multiple cover letters at once, saving you time while maximizing your opportunities.    </td>
   </tr>
 </table>
@@ -76,10 +76,10 @@ Streamline your job search by generating multiple cover letters at once, saving 
 <table border="0">
   <tr>
     <td style="padding-left: 20px;">
-      <h3>5. Chat with Your Cover Letter</h3>
+      <h3>4. Chat with Your Cover Letter</h3>
 Engage with your cover letter through our chat feature. Modify and enhance it to reflect your personality, ensuring it truly represents you before submission.    </td>
     <td width="70%">
-      <img src="https://github.com/hablasteis/CoverLetterGPT/blob/main/docs/media/chat.gif?raw=true" alt="Chat with Your Cover Letter" height="400px" />
+      <img src="https://github.com/hablasteis/CoverLetterGPT/blob/main/docs/media/chat.gif?raw=true" alt="Chat with Your Cover Letter" />
     </td>
   </tr>
 </table>
@@ -89,10 +89,10 @@ Engage with your cover letter through our chat feature. Modify and enhance it to
 <table border="0">
   <tr>
     <td width="70%">
-      <img src="https://github.com/hablasteis/CoverLetterGPT/blob/main/docs/media/view_pdf.gif?raw=true" alt="Export Cover Letter as PDF" height="400px" />
+      <img src="https://github.com/hablasteis/CoverLetterGPT/blob/main/docs/media/view_pdf.gif?raw=true" alt="Export Cover Letter as PDF" />
     </td>
     <td style="padding-left: 20px;">
-      <h3>6. Export Your Cover Letter as PDF</h3>
+      <h3>5. Export Your Cover Letter as PDF</h3>
 Download your finalized cover letter as a polished PDF with just a click.    </td>
   </tr>
 </table>
