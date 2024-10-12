@@ -5,18 +5,28 @@ from prompts import dumb_down_prompt
 from src.job import Job
 from src.letter import CoverLetter
 from src.generator import ChatLetterGenerator
-from utils.general import split_by_dear
+from utils.general import extract_cover_letter
+
+from streamlit_pdf_viewer import pdf_viewer
 
 
 @st.dialog("View PDF")
-def view_pdf(file_name):
-    from streamlit_pdf_viewer import pdf_viewer
-    file_path = os.path.join(CoverLetter.downloads_folder, file_name)
-    st.markdown(f"Your cover letter is saved at:")
-    st.code(f"file:///{file_path}", language="shell")
+def view_pdf(cl, index, letter):
+    file_name = cl.get_pdf_file_name(index)
 
-    with st.spinner("Loading..."):
-        pdf_viewer(file_path,)
+    pdf_path = os.path.join(CoverLetter.downloads_folder, file_name)
+    
+    if st.button("Edit letter"):
+        new_letter = st.text_area("label", label_visibility="hidden", value=letter)
+        st.button("Save and update PDF", on_click=cl.update_letter, args=(new_letter, index))
+
+    else:
+
+        st.markdown(f"Your cover letter is saved at:")
+        st.code(f"file:///{pdf_path}", language="shell")
+
+        with st.spinner("Loading..."):
+            pdf_viewer(pdf_path,)
 
 def is_chat_visible():
     return "display_chat" in st.session_state and st.session_state["display_chat"]
@@ -28,7 +38,7 @@ def is_correct_chat(chat_type):
     return st.session_state["display_chat"] == chat_type
 
 def display_chat():
-
+    # if we clicked on the open chat button in the letters list
     if "edit_letter" in st.session_state:
         st.query_params["job"] = st.session_state["edit_letter"]
         del st.session_state.edit_letter
@@ -36,13 +46,14 @@ def display_chat():
 
     st.header("Chat with cover letter")
 
-
+    # if we didn't add a job to chat with
     if "job" not in st.query_params and "job_id" not in st.session_state:
         st.subheader("Ops... There is nothing here!")
         st.write("Please select a cover letter to chat with")
 
+    # if we clicked on the open chat button in the letters list  
+    # (THIS will happen first on chat open)  
     if "job" in st.query_params:
-        # Might be LinkedinJob
         job_id = st.query_params["job"]
 
         job = Job.load(job_id)
@@ -52,19 +63,20 @@ def display_chat():
         letter = job.get_letter_path()
         with open(letter, "r") as file:
             letter = file.read()
-            _, letter = split_by_dear(letter)
+            letter = extract_cover_letter(letter)
 
         st.session_state.messages[job_id] = [{"role": "assistant", "content": letter}]
         del st.query_params.job
 
+    # if we added a job to chat with
     if "job_id" in st.session_state:
         job_id = st.session_state["job_id"]
         job = Job.load(job_id)
 
 
-        generator = ChatLetterGenerator(job_id)
+        generator = ChatLetterGenerator(job_id, job.title, job.description)
         cl = CoverLetter(job.job_id, job.get_letter_path())
-
+ 
         # Get index of the cover letter which is saved on disk
         saved_index = cl.saved_in_messages(st.session_state.messages[job_id])
 
@@ -122,7 +134,7 @@ def display_chat():
                                     key=f"view_{index}",
                                     type="primary"
                                     ):
-                                    view_pdf(cl.get_file_name(index))
+                                    view_pdf(cl, index, message["content"])
                 
                 
             if dumber:
@@ -151,7 +163,7 @@ def display_chat():
                     response = st.write_stream(
                         generator.generate(
                             model_name = st.session_state.model_name, 
-                            messages = st.session_state.messages[job_id]
+                            messages = st.session_state.messages[job_id],
                             )
                         )
 

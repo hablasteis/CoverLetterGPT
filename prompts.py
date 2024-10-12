@@ -14,10 +14,7 @@ cover_letter_prompt = f"""
 {{cv}}
 
 # OBJECTIVE #
-You are tasked with the following:
-1. Make a list of all key elements from the JOB AD i.e. what the company wants in the candidate
-2. Match these needs with my experiences and qualities in the CONTEXT. These can be vague matches too, but its critical to get as many quaities covered (however it's also critical to not lie in a way that they will find out)
-3. Write a cover letter tailored to the matches 
+{{objective}}
 
 # RESPONSE #
 {simplify_style_prompt}

@@ -1,5 +1,7 @@
 import streamlit as st
 import os
+import re
+import json
 from src.job import LinkedinJob, CustomJob
 from src.generator import LinkedinLetterGenerator, CustomLetterGenerator
 
@@ -63,3 +65,59 @@ def show_model_selection():
 def exists_cv():
     if not os.path.exists("cv.txt"):
         st.warning("😲 Psst! Your CV is empty, write it in the Profile section to generate cover letters!")
+
+
+def extract_cover_letter(text):
+    # Look for the first valid "Dear" that appears after some context
+    letter_start_pattern = r'(Dear\s*(?:\w+(?:\s+\w+)*)?,\s*\n?.*?\n)'
+
+    start_match = re.search(letter_start_pattern, text, re.IGNORECASE)
+
+    if start_match:
+        start_index = start_match.start()
+
+    else:
+        # Fail-safe: Try to find the next-to-last occurrence of ',\n'
+        commas_and_newlines = [m.start() for m in re.finditer(r',\s\n', text)]
+        if len(commas_and_newlines) >= 2:
+            # Get the next-to-last occurrence
+            comma_index = commas_and_newlines[-2]
+            
+            preceding_newline = text.rfind('\n', 0, comma_index)
+            
+            start_index = preceding_newline + 1 if preceding_newline != -1 else 0
+        else:
+            return ''  # If fewer than two occurrences, return empty string
+        
+    
+    # find the closing signature
+    letter_end_pattern = r'(?:(Sincerely|Best\s+regards|Warm\s+regards|Regards|Thank\s+you|Cheers)\s*,?\s*(?=\s*$|\n))' 
+
+    end_match = re.search(letter_end_pattern, text, re.DOTALL | re.IGNORECASE)
+
+    # Append name at the end
+    if os.path.exists("info.json"):
+        with open("info.json", 'r') as file:
+            info = json.load(file)
+        name = info["name"].strip()
+    else:
+        name = None
+
+    if end_match:
+        end_index = end_match.end(1)  
+        cover_letter = text[start_index:end_index+1]
+        
+        return f"{cover_letter} \n {name}" if name else cover_letter[-1]
+
+
+    # Fail-safe: If no specific end pattern found, find the last comma and newline
+    last_comma_index = text[start_index:].rfind(',')
+    last_newline_index = text[start_index:].rfind('\n')
+
+    # We take the smaller index of the two, and ensure they are valid
+    if last_comma_index != -1 and last_newline_index != -1:
+        end_index = min(last_comma_index, last_newline_index) + 1  
+        cover_letter = text[start_index:start_index + end_index].strip()
+        return f"{cover_letter} \n {name}" if name else cover_letter[-1]
+
+    return ''

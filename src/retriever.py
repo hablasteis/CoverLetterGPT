@@ -32,7 +32,6 @@ def generate_cover_letter(index):
 
 
 
-
 class LinkedinRetriever(Retriever):
     # Event listener for LinkedIn jobs data
     
@@ -250,7 +249,6 @@ class LinkedinRetriever(Retriever):
                     asyncio.run(self.scrape_jobs(currently_showing))
 
                 st.session_state.jobs = self.jobs
-
 
 
         if "jobs" in st.session_state:

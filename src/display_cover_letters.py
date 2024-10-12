@@ -75,7 +75,7 @@ def display_cover_letter_comparison(job):
                         st.success("Cover letter updated!")
 
                     # Display the part before the 'Dear' line as info
-                    if pre_dear_part.strip():
+                    if pre_dear_part:
                         st.info(pre_dear_part.strip())
 
                 else:
