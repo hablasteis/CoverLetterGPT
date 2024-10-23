@@ -38,24 +38,11 @@ def is_correct_chat(chat_type):
     return st.session_state["display_chat"] == chat_type
 
 def display_chat():
-    # if we clicked on the open chat button in the letters list
+    # if we clicked on the open chat button in the letters list OR
+    # if we just generated a custom lettter
     if "edit_letter" in st.session_state:
-        st.query_params["job"] = st.session_state["edit_letter"]
+        job_id = st.session_state["edit_letter"]
         del st.session_state.edit_letter
-        st.rerun()
-
-
-    st.header("Chat with cover letter")
-
-    # if we didn't add a job to chat with
-    if "job" not in st.query_params and "job_id" not in st.session_state:
-        st.subheader("Ops... There is nothing here!")
-        st.write("Please select a cover letter to chat with")
-
-    # if we clicked on the open chat button in the letters list  
-    # (THIS will happen first on chat open)  
-    if "job" in st.query_params:
-        job_id = st.query_params["job"]
 
         job = Job.load(job_id)
 
@@ -63,11 +50,20 @@ def display_chat():
 
         letter = job.get_letter_path()
         with open(letter, "r") as file:
-            letter = file.read()
-            letter = extract_cover_letter(letter)
+            raw_letter = file.read()
+            letter = extract_cover_letter(raw_letter)
 
+            if letter == "" and raw_letter != "":
+                st.warning("Error occured when extracting the cover letter")
+ 
         st.session_state.messages[job_id] = [{"role": "assistant", "content": letter}]
-        del st.query_params.job
+
+    st.header("Chat with cover letter")
+
+    # if we didn't add a job to chat with
+    if  "job_id" not in st.session_state or not st.session_state.messages[st.session_state.job_id]:
+        st.subheader("Ops... There is nothing here!")
+        st.write("Please select a cover letter to chat with")
 
     # if we added a job to chat with
     if "job_id" in st.session_state:

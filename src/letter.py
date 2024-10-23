@@ -50,8 +50,6 @@ class CoverLetter():
         return letter.strip()
     
     def export_to_pdf(self, cover_letter_text, index):
-        print("test", index)
-        print(cover_letter_text)
         cover_letter_text = extract_cover_letter(cover_letter_text)
 
         file_name = self.get_pdf_file_name(index)

@@ -78,7 +78,7 @@ def extract_cover_letter(text):
 
     else:
         # Fail-safe: Try to find the next-to-last occurrence of ',\n'
-        commas_and_newlines = [m.start() for m in re.finditer(r',\s\n', text)]
+        commas_and_newlines = [m.start() for m in re.finditer(r',\s+\n', text)]
         if len(commas_and_newlines) >= 2:
             # Get the next-to-last occurrence
             comma_index = commas_and_newlines[-2]
@@ -108,7 +108,6 @@ def extract_cover_letter(text):
         cover_letter = text[start_index:end_index+1]
         
         return f"{cover_letter} \n {name}" if name else cover_letter[-1]
-
 
     # Fail-safe: If no specific end pattern found, find the last comma and newline
     last_comma_index = text[start_index:].rfind(',')
