@@ -42,6 +42,7 @@ def display_chat():
     if "edit_letter" in st.session_state:
         st.query_params["job"] = st.session_state["edit_letter"]
         del st.session_state.edit_letter
+        st.rerun()
 
 
     st.header("Chat with cover letter")
